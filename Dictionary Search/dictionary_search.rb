@@ -5,15 +5,15 @@ class DictionarySearch
 	end
   
 	def word_pairs
-		@words.select! {|word| word.size >=2 && word[-2] != word[-1]}
-		
-		@words.select! {|word| @words.index(word[0...-2]+word[-2,2].reverse)}
-		
-		@words.reject! {|word| @words.index(word[0...-2]+word[-2,2].reverse)}
-		
+		pairs = Hash.new
 		answer = Array.new
-		@words.each{|word| answer << Array[word,word[0...-2]+word[-2,2].reverse]}
-		puts answer.to_s
+		@words.each do|word|
+			if word.size >=2 && word[-2] != word[-1] then
+				rev_word = word[0...-2]+word[-2,2].reverse
+				pairs[word] = rev_word
+				answer << Array[word, rev_word] if pairs[rev_word]
+			end
+		end
 		answer
 	end
 end  
